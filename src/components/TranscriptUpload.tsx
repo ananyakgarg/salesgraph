@@ -49,9 +49,8 @@ import {
   Th,
   Td,
   Input,
-  motion,
-  AnimatePresence
 } from '@chakra-ui/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiFile, 
   FiCheck, 
@@ -131,11 +130,17 @@ export default function TranscriptUpload() {
         const transcriptsQuery = query(transcriptsRef, orderBy('createdAt', 'desc'));
         
         const snapshot = await getDocs(transcriptsQuery);
-        const transcriptsList = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate()
-        }));
+        const transcriptsList = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            title: data.title || 'Untitled',
+            preview: data.preview || 'No preview available',
+            source: data.source || 'Unknown source',
+            createdAt: data.createdAt?.toDate() || new Date(),
+            ...data // spread remaining data
+          } as TranscriptData;
+        });
         console.log('Loaded transcripts:', transcriptsList.length);
         setTranscripts(transcriptsList);
       } else {
