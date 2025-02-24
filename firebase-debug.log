@@ -1,0 +1,23 @@
+[debug] [2025-02-23T07:24:15.960Z] ----------------------------------------------------------------------
+[debug] [2025-02-23T07:24:15.961Z] Command:       /opt/homebrew/Cellar/node/23.6.0/bin/node /opt/homebrew/bin/firebase firestore:delete /transcripts --project salesgraph-b3a41 -r
+[debug] [2025-02-23T07:24:15.962Z] CLI Version:   13.31.2
+[debug] [2025-02-23T07:24:15.962Z] Platform:      darwin
+[debug] [2025-02-23T07:24:15.962Z] Node Version:  v23.6.0
+[debug] [2025-02-23T07:24:15.962Z] Time:          Sun Feb 23 2025 02:24:15 GMT-0500 (Eastern Standard Time)
+[debug] [2025-02-23T07:24:15.962Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-02-23T07:24:15.966Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-02-23T07:24:15.966Z] > authorizing via signed-in user (ananyakgarg25@gmail.com)
+[debug] [2025-02-23T07:24:15.966Z] [iam] checking project salesgraph-b3a41 for permissions ["datastore.entities.delete","datastore.entities.list","firebase.projects.get"]
+[debug] [2025-02-23T07:24:15.966Z] Checked if tokens are valid: false, expires at: 1736482293376
+[debug] [2025-02-23T07:24:15.966Z] Checked if tokens are valid: false, expires at: 1736482293376
+[debug] [2025-02-23T07:24:15.967Z] > refreshing access token with scopes: []
+[debug] [2025-02-23T07:24:15.967Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-02-23T07:24:15.967Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-02-23T07:24:16.140Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-02-23T07:24:16.140Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-02-23T07:24:16.149Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/salesgraph-b3a41:testIamPermissions [none]
+[debug] [2025-02-23T07:24:16.149Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/salesgraph-b3a41:testIamPermissions x-goog-quota-user=projects/salesgraph-b3a41
+[debug] [2025-02-23T07:24:16.149Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/salesgraph-b3a41:testIamPermissions {"permissions":["datastore.entities.delete","datastore.entities.list","firebase.projects.get"]}
+[debug] [2025-02-23T07:24:16.408Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/salesgraph-b3a41:testIamPermissions 200
+[debug] [2025-02-23T07:24:16.408Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/salesgraph-b3a41:testIamPermissions {"permissions":["datastore.entities.delete","datastore.entities.list","firebase.projects.get"]}
