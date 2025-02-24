@@ -164,62 +164,61 @@ const MeetingRecorder = () => {
     setUploadProgress(0);
 
     try {
-      // First, transcribe the audio using Whisper API
+      // Send audio to OpenAI Whisper API via server route
       const formData = new FormData();
       formData.append('file', audioBlob, 'recording.wav');
-      formData.append('model', 'whisper-1');
 
-      const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
-        },
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('Transcription failed');
-      }
-
-      const transcriptionResult = await response.json();
-      
-      // Get employee document reference
-      const employeeQuery = query(
-        collection(db, 'employee'),
-        where('userId', '==', auth.currentUser.uid)
-      );
-      const employeeSnapshot = await getDocs(employeeQuery);
-      
-      if (!employeeSnapshot.empty) {
-        const employeeDoc = employeeSnapshot.docs[0];
-        
-        // Save transcript to Firestore
-        const transcriptRef = await addDoc(collection(employeeDoc.ref, 'calls'), {
-          transcript: transcriptionResult.text,
-          source: 'recording',
-          createdAt: serverTimestamp(),
-          duration: recordingTime,
+      try {
+        const response = await fetch('/api/transcribe', {
+          method: 'POST',
+          body: formData,
         });
 
+        if (!response.ok) {
+          throw new Error('Failed to transcribe audio');
+        }
+
+        const data = await response.json();
+        const transcription = data.text;
+        
+        // Get employee document reference
+        const employeeQuery = query(
+          collection(db, 'employee'),
+          where('userId', '==', auth.currentUser.uid)
+        );
+        const employeeSnapshot = await getDocs(employeeQuery);
+        
+        if (!employeeSnapshot.empty) {
+          const employeeDoc = employeeSnapshot.docs[0];
+          
+          // Save transcript to Firestore
+          const transcriptRef = await addDoc(collection(employeeDoc.ref, 'calls'), {
+            transcript: transcription,
+            source: 'recording',
+            createdAt: serverTimestamp(),
+            duration: recordingTime,
+          });
+
+          toast({
+            title: 'Recording transcribed',
+            description: 'Your meeting has been recorded and transcribed successfully.',
+            status: 'success',
+            duration: 5000,
+          });
+
+          // Reset state
+          setAudioBlob(null);
+          setRecordingTime(0);
+        }
+      } catch (error) {
+        console.error('Error uploading recording:', error);
         toast({
-          title: 'Recording transcribed',
-          description: 'Your meeting has been recorded and transcribed successfully.',
-          status: 'success',
+          title: 'Error',
+          description: 'Failed to transcribe recording. Please try again.',
+          status: 'error',
           duration: 5000,
         });
-
-        // Reset state
-        setAudioBlob(null);
-        setRecordingTime(0);
       }
-    } catch (error) {
-      console.error('Error uploading recording:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to transcribe recording. Please try again.',
-        status: 'error',
-        duration: 5000,
-      });
     } finally {
       setIsUploading(false);
       setUploadProgress(0);

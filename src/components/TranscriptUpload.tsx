@@ -63,7 +63,8 @@ import {
   FiInbox, 
   FiCircle, 
   FiCheckCircle,
-  FiSettings
+  FiSettings,
+  FiMessageSquare
 } from 'react-icons/fi';
 import { db, auth } from '@/lib/firebase';
 import { 
@@ -459,8 +460,8 @@ export default function TranscriptUpload() {
 
   return (
     <>
-      <Box maxW="1200px" mx="auto" p={4}>
-        <VStack spacing={8} align="stretch">
+      <Box w="100%" p={6} borderWidth={1} borderRadius="lg" bg="white">
+        <VStack spacing={4} align="stretch" w="100%">
           <HStack justify="space-between" align="center">
             <VStack align="start" spacing={1}>
               <Heading size="lg">Sales Call Manager</Heading>
@@ -485,82 +486,69 @@ export default function TranscriptUpload() {
             </HStack>
           </HStack>
 
-          <Tabs isFitted variant="enclosed-colored" index={tabIndex} onChange={handleTabChange}>
-            <TabList mb="1em">
-              <Tab>
-                <HStack>
-                  <Icon as={FiMic} />
-                  <Text>Record</Text>
-                </HStack>
-              </Tab>
-              <Tab>
-                <HStack>
-                  <Icon as={FiFileText} />
-                  <Text>Paste</Text>
-                </HStack>
-              </Tab>
-              <Tab>
-                <HStack>
-                  <Icon as={FiList} />
-                  <Text>Library</Text>
-                </HStack>
-              </Tab>
+          <Tabs variant="soft-rounded" colorScheme="blue" w="100%">
+            <TabList>
+              <Tab>Record</Tab>
+              <Tab>Paste</Tab>
+              <Tab>Library</Tab>
             </TabList>
 
             <TabPanels>
               <TabPanel>
-                <Box 
-                  bg={colorMode === 'dark' ? 'gray.800' : 'white'} 
-                  p={6} 
-                  borderRadius="xl" 
-                  shadow="sm"
-                >
-                  <MeetingRecorder />
-                </Box>
+                <VStack spacing={4} align="stretch" w="100%">
+                  <Box p={4} bg="blue.50" borderRadius="md">
+                    <Text fontWeight="bold" mb={2}>How to record a Zoom meeting:</Text>
+                    <List spacing={2}>
+                      <ListItem>Open your Zoom desktop app and join the meeting</ListItem>
+                      <ListItem>Click "Start Recording" below</ListItem>
+                      <ListItem>When prompted, select "Entire Screen" that has Zoom</ListItem>
+                      <ListItem>Make sure to enable "Share system audio" checkbox</ListItem>
+                    </List>
+                    <Text color="red.500" fontSize="sm" mt={2}>
+                      Important: You must enable "Share system audio" to capture the meeting
+                    </Text>
+                    <Text fontSize="sm" color="gray.600" mt={1}>
+                      Note: For best quality, use Chrome or Edge browser
+                    </Text>
+                  </Box>
+
+                  <Text fontSize="4xl" textAlign="center">
+                    {/* {formatTime(recordingTime)} */}
+                  </Text>
+
+                  <Button
+                    leftIcon={<Icon as={FiMic} />}
+                    colorScheme="blue"
+                    // onClick={handleRecordingClick}
+                    w="100%"
+                  >
+                    Start Recording
+                  </Button>
+                </VStack>
               </TabPanel>
 
               <TabPanel>
-                <Box 
-                  bg={colorMode === 'dark' ? 'gray.800' : 'white'} 
-                  p={6} 
-                  borderRadius="xl" 
-                  shadow="sm"
-                >
-                  <VStack spacing={4}>
-                    <Textarea
-                      value={pastedTranscript}
-                      onChange={(e) => setPastedTranscript(e.target.value)}
-                      placeholder="Paste your transcript here..."
-                      size="lg"
-                      minHeight="300px"
-                      bg={colorMode === 'dark' ? 'gray.700' : 'white'}
-                      _focus={{
-                        borderColor: 'blue.500',
-                        boxShadow: 'none'
-                      }}
-                    />
-                    <Button
-                      colorScheme="blue"
-                      onClick={handlePasteSubmit}
-                      isLoading={uploading}
-                      isDisabled={!pastedTranscript.trim()}
-                      width="100%"
-                      size="lg"
-                      leftIcon={<Icon as={FiSave} />}
-                    >
-                      Save Transcript
-                    </Button>
-                  </VStack>
-                </Box>
+                <VStack spacing={4} align="stretch" w="100%">
+                  <Textarea
+                    placeholder="Paste your transcript here..."
+                    size="lg"
+                    minH="200px"
+                    value={pastedTranscript}
+                    onChange={(e) => setPastedTranscript(e.target.value)}
+                  />
+                  <Button
+                    colorScheme="blue"
+                    onClick={handlePasteSubmit}
+                    isLoading={uploading}
+                    w="100%"
+                  >
+                    Upload Transcript
+                  </Button>
+                </VStack>
               </TabPanel>
 
               <TabPanel>
-                <Box 
-                  bg={colorMode === 'dark' ? 'gray.800' : 'white'} 
-                  p={6} 
-                  borderRadius="xl" 
-                  shadow="sm"
-                >
+                <VStack spacing={4} align="stretch" w="100%">
                   {transcripts.length === 0 ? (
                     <VStack 
                       spacing={4} 
@@ -617,19 +605,20 @@ export default function TranscriptUpload() {
                               <Td>
                                 <ButtonGroup size="sm" variant="ghost">
                                   <Button
-                                    leftIcon={<FiFileText />}
+                                    leftIcon={<Icon as={FiFileText} />}
                                     onClick={() => handleViewTranscript(transcript)}
                                   >
                                     View
                                   </Button>
                                   <Button
-                                    leftIcon={<FiMic />}
+                                    leftIcon={<Icon as={FiMessageSquare} />}
                                     onClick={() => handleStartChat(transcript)}
+                                    colorScheme="green"
                                   >
-                                    Analyze with AI
+                                    Chat AI
                                   </Button>
                                   <Button
-                                    leftIcon={<FiCircle />}
+                                    leftIcon={<Icon as={FiCircle} />}
                                     onClick={() => {
                                       setTranscriptToDelete(transcript);
                                       onDeleteOpen();
@@ -646,7 +635,7 @@ export default function TranscriptUpload() {
                       </Table>
                     </VStack>
                   )}
-                </Box>
+                </VStack>
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -661,12 +650,12 @@ export default function TranscriptUpload() {
             <HStack justify="space-between">
               <VStack align="start" spacing={1}>
                 <Text>View Transcript</Text>
-                <Badge colorScheme={selectedTranscript.source === 'file' ? 'blue' : 'purple'}>
-                  {selectedTranscript.source === 'file' ? 'File Upload' : 'Pasted'}
+                <Badge colorScheme={selectedTranscript?.source === 'file' ? 'blue' : 'purple'}>
+                  {selectedTranscript?.source === 'file' ? 'File Upload' : 'Pasted'}
                 </Badge>
               </VStack>
               <Text fontSize="sm" color="gray.500">
-                {formatDate(selectedTranscript.createdAt)}
+                {selectedTranscript?.createdAt && formatDate(selectedTranscript.createdAt)}
               </Text>
             </HStack>
           </ModalHeader>
@@ -679,7 +668,7 @@ export default function TranscriptUpload() {
               maxH="600px"
               overflowY="auto"
             >
-              <Text whiteSpace="pre-wrap">{selectedTranscript.transcript}</Text>
+              <Text whiteSpace="pre-wrap">{selectedTranscript?.transcript}</Text>
             </Box>
           </ModalBody>
         </ModalContent>
