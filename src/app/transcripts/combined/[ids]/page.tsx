@@ -183,7 +183,8 @@ export default function CombinedTranscriptQueryPage() {
           const employeeDoc = employeeSnapshot.docs[0];
           
           // Create a sorted combination ID that will be consistent regardless of order
-          const combinationId = params.ids.split(',').sort().join('_');
+          const idsArray = Array.isArray(params.ids) ? params.ids : params.ids.split(',');
+          const combinationId = idsArray.sort().join('_');
           
           // Get or create the messages collection for this combination
           const messagesRef = collection(employeeDoc.ref, 'combinations', combinationId, 'messages');
@@ -234,7 +235,8 @@ export default function CombinedTranscriptQueryPage() {
         const employeeDoc = employeeSnapshot.docs[0];
         
         // Create a sorted combination ID
-        const combinationId = params.ids.split(',').sort().join('_');
+        const idsArray = Array.isArray(params.ids) ? params.ids : params.ids.split(',');
+        const combinationId = idsArray.sort().join('_');
         
         // Add user message to this combination's messages
         const messagesRef = collection(employeeDoc.ref, 'combinations', combinationId, 'messages');

@@ -116,11 +116,11 @@ export default function TranscriptsPage() {
           </Box>
         </GridItem>
 
-        <GridItem colSpan={12} md={6}>
+        <GridItem colSpan={12} w={{ md: "50%" }}>
           <TranscriptUpload />
         </GridItem>
 
-        <GridItem colSpan={12} md={6}>
+        <GridItem colSpan={12} w={{ md: "50%" }}>
           <Box p={6} borderWidth={1} borderRadius="lg" bg="white">
             <VStack spacing={4} align="stretch">
               <Heading size="md">Your Transcripts</Heading>

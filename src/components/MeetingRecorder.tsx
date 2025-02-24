@@ -58,15 +58,10 @@ const MeetingRecorder = () => {
 
       // For system audio on macOS, we need to capture the entire screen
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: {
-          displaySurface: 'monitor' as any, // Prefer full screen capture
-        },
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
-        systemAudio: 'include' as any // Chrome/Edge specific
+        video: true,
+        audio: true,
+        // @ts-ignore Chrome/Edge specific feature
+        systemAudio: 'include'
       });
 
       // Create an audio context to mix the streams
