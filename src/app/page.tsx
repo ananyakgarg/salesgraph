@@ -17,7 +17,6 @@ import {
   ListIcon,
   Badge,
   chakra,
-  shouldShowFallbackImage,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { auth } from '@/lib/firebase';
